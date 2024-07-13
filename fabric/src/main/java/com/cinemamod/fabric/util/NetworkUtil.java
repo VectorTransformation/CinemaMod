@@ -22,11 +22,11 @@ public final class NetworkUtil {
     private static final CinemaModClient CD = CinemaModClient.getInstance();
 
     public static void registerReceivers() {
-        registerInbound(ChannelServicesPayload.CHANNEL_SERVICES, ((payload, context) -> {
+        registerInbound(ChannelServicesPayload.CHANNEL_SERVICES, (payload, context) -> {
             for (VideoService element : payload.service()) {
                 CD.getVideoServiceManager().register(element);
             }
-        }));
+        });
         registerInbound(ChannelScreensPayload.CHANNEL_SCREENS, (payload, context) -> {
             for (Screen element : payload.screens()) {
                 CD.getScreenManager().registerScreen(element);
@@ -39,12 +39,12 @@ public final class NetworkUtil {
             System.out.println(video.getVideoInfo().getTitle());
             context.client().submit(() -> screen.loadVideo(video));
         });
-        registerInbound(UnloadScreenPayload.UNLOAD_SCREEN, ((payload, context) -> {
+        registerInbound(UnloadScreenPayload.UNLOAD_SCREEN, (payload, context) -> {
             Screen screen = CD.getScreenManager().getScreen(new BlockPos(payload.getX(), payload.getY(), payload.getZ()));
             if (screen == null) return;
             context.client().submit(screen::closeBrowser);
-        }));
-        registerInbound(UpdatePreviewScreenPayload.CHANNEL_UPDATE_PREVIEW_SCREEN, ((payload, context) -> {
+        });
+        registerInbound(UpdatePreviewScreenPayload.CHANNEL_UPDATE_PREVIEW_SCREEN, (payload, context) -> {
             PreviewScreen previewScreen = payload.screen();
             PreviewScreenManager manager = CD.getPreviewScreenManager();
             VideoInfo videoInfo = previewScreen.getVideoInfo();
@@ -52,17 +52,14 @@ public final class NetworkUtil {
                 manager.addPreviewScreen(previewScreen);
             else
                 manager.getPreviewScreen(previewScreen.getBlockPos()).setVideoInfo(videoInfo);
-        }));
-        registerInbound(ChannelOpenSettingsScreenPayload.CHANNEL_OPEN_SETTINGS_SCREEN, ((payload, context) -> {
+        });
+        registerInbound(ChannelOpenSettingsScreenPayload.CHANNEL_OPEN_SETTINGS_SCREEN, (payload, context) -> {
             context.client().submit(() -> context.client().setScreen(payload.screen()));
-        }));
-        registerInbound(ChannelOpenHistoryScreenPayload.CHANNEL_OPEN_HISTORY_SCREEN, ((payload, context) -> {
+        });
+        registerInbound(ChannelOpenHistoryScreenPayload.CHANNEL_OPEN_HISTORY_SCREEN, (payload, context) -> {
             context.client().submit(() -> context.client().setScreen(payload.screen()));
-        }));
-        registerInbound(ChannelVideoListHistorySplit.CHANNEL_OPEN_SETTINGS_SCREEN, ((payload, context) -> {
-            CD.getVideoListManager().getHistory().merge(new VideoList(payload.entries()));
-        }));
-        registerInbound(ChannelVideoQueueStatePayload.CHANNEL_VIDEO_QUEUE_STATE, ((payload, context) -> {
+        });
+        registerInbound(ChannelVideoQueueStatePayload.CHANNEL_VIDEO_QUEUE_STATE, (payload, context) -> {
             CD.getVideoQueue().setVideos(payload.queue());
             context.client().submit(() -> {
                 if (context.client().currentScreen instanceof VideoQueueScreen) {
@@ -70,7 +67,10 @@ public final class NetworkUtil {
                     videoQueueScreen.videoQueueWidget.update();
                 }
             });
-        }));
+        });
+//        registerInbound(ChannelVideoListHistorySplit.CHANNEL_VIDEO_LIST_HISTORY_SPLIT, (payload, context) -> {
+//            CD.getVideoListManager().getHistory().merge(new VideoList(payload.entries()));
+//        }); // ?
 
         registerOutbound(ChannelVideoRequestPayload.CHANNEL_VIDEO_REQUEST);
         registerOutbound(ChannelVideoHistoryRemovePayload.CHANNEL_VIDEO_HISTORY_REMOVE);

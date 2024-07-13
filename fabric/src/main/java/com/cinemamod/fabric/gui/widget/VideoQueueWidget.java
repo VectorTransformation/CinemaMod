@@ -6,6 +6,7 @@ import com.cinemamod.fabric.video.queue.QueuedVideo;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ElementListWidget;
+import net.minecraft.client.gui.widget.EntryListWidget;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,21 +15,19 @@ import java.util.List;
 public class VideoQueueWidget extends ElementListWidget<VideoQueueWidgetEntry> {
 
     private VideoQueueScreen parent;
-    private final int top;
 
-    public VideoQueueWidget(VideoQueueScreen parent, MinecraftClient client, int width, int height, int top, int bottom, int itemHeight) {
-        super(client, width, height, bottom, itemHeight);
+    public VideoQueueWidget(VideoQueueScreen parent, MinecraftClient client, int width, int height, int y, int itemHeight) {
+        super(client, width, height, y, itemHeight);
         this.parent = parent;
-        this.top = top;
-        setRenderHeader(false, 0);
+//        setRenderBackground(false);
 //        setRenderHorizontalShadows(false);
         update();
     }
 
     @Override
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-        context.enableScissor(this.getRowLeft(), this.top + 4, this.getScrollbarX() + this.getRowLeft() + 6, this.height - this.top - 4);
-        super.render(context, mouseX, mouseY, delta);
+        context.enableScissor(this.getRowLeft(), this.getY() + 4, this.getScrollbarX() + this.getRowLeft() + 6, this.height - this.getY() - 4);
+        super.renderWidget(context, mouseX, mouseY, delta);
         context.disableScissor();
     }
 

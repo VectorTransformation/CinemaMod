@@ -16,8 +16,8 @@ public class UnloadScreensMixin {
     @Shadow
     private ClientWorld world;
 
-    @Inject(at = @At("HEAD"), method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V")
-    private void disconnect(Screen screen, CallbackInfo info) {
+    @Inject(at = @At("HEAD"), method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;Z)V")
+    private void disconnect(Screen screen, boolean transferring, CallbackInfo info) {
         CinemaModClient.getInstance().getScreenManager().unloadAll();
         CinemaModClient.getInstance().getPreviewScreenManager().unloadAll();
         CinemaModClient.getInstance().getVideoServiceManager().unregisterAll();

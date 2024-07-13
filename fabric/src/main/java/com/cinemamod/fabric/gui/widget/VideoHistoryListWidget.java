@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 public class VideoHistoryListWidget extends VideoListWidget {
 
-    public VideoHistoryListWidget(VideoList videoList, MinecraftClient client, int width, int height, int top, int bottom, int itemHeight) {
-        super(videoList, client, width, height, top, bottom, itemHeight);
+    public VideoHistoryListWidget(VideoList videoList, MinecraftClient client, int width, int height, int y, int itemHeight) {
+        super(videoList, client, width, height, y, itemHeight);
     }
 
     @Override

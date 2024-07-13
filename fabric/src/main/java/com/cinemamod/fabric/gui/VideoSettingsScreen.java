@@ -93,7 +93,9 @@ public class VideoSettingsScreen extends Screen {
 
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
         int i = this.method_31362() + 3;
-        super.renderBackground(context, mouseX, mouseY, delta);
+//        super.renderBackground(context, mouseX, mouseY, delta);
+        renderDarkening(context);
+        renderInGameBackground(context);
         context.drawTexture(TEXTURE, i, 64, 1, 1, 236, 8);
         int j = this.method_31360();
         for (int k = 0; k < j; ++k)
