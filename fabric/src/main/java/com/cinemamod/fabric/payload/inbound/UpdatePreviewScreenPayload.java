@@ -11,7 +11,7 @@ import org.apache.commons.lang3.NotImplementedException;
 
 public record UpdatePreviewScreenPayload(PreviewScreen screen) implements CustomPayload {
     public static final IdCodec<UpdatePreviewScreenPayload> CHANNEL_UPDATE_PREVIEW_SCREEN = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "update_preview_screen")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "update_preview_screen")),
             PacketCodec.ofStatic(
                     (b, p) -> {
                         throw new NotImplementedException();

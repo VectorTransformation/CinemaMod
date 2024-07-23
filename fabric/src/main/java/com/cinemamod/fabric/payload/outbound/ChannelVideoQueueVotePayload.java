@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 
 public record ChannelVideoQueueVotePayload(VideoInfo videoInfo, int voteType) implements CustomPayload {
     public static final IdCodec<ChannelVideoQueueVotePayload> CHANNEL_VIDEO_QUEUE_VOTE = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "video_queue_vote")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "video_queue_vote")),
             PacketCodec.ofStatic(
                     (b, p) -> {
                         p.videoInfo.toBytes(b);

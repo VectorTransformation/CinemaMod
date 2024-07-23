@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 
 public record ChannelVideoHistoryRemovePayload(VideoInfo info) implements CustomPayload {
     public static final IdCodec<ChannelVideoHistoryRemovePayload> CHANNEL_VIDEO_HISTORY_REMOVE = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "video_history_remove")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "video_history_remove")),
             PacketCodec.ofStatic(
                     (b, p) -> p.info.toBytes(b),
                     b -> new ChannelVideoHistoryRemovePayload(new VideoInfo().fromBytes(b))

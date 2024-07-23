@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 
 public record ChannelVideoQueueRemovePayload(VideoInfo info) implements CustomPayload {
     public static final IdCodec<ChannelVideoQueueRemovePayload> CHANNEL_VIDEO_QUEUE_REMOVE = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "video_queue_remove")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "video_queue_remove")),
             PacketCodec.ofStatic(
                     (b, p) -> p.info.toBytes(b),
                     b -> new ChannelVideoQueueRemovePayload(new VideoInfo().fromBytes(b))

@@ -14,7 +14,7 @@ import java.util.List;
 
 public record ChannelVideoQueueStatePayload(List<QueuedVideo> queue) implements CustomPayload {
     public static final IdCodec<ChannelVideoQueueStatePayload> CHANNEL_VIDEO_QUEUE_STATE = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "video_queue_state")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "video_queue_state")),
             PacketCodec.ofStatic(
                     (b, p) -> {
                         throw new NotImplementedException();

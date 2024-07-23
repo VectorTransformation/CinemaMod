@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 
 public record ChannelOpenHistoryScreenPayload(VideoHistoryScreen screen) implements CustomPayload {
     public static final IdCodec<ChannelOpenHistoryScreenPayload> CHANNEL_OPEN_HISTORY_SCREEN = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "open_history_screen")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "open_history_screen")),
             PacketCodec.ofStatic(
                     (b, p) -> {},
                     b -> new ChannelOpenHistoryScreenPayload(new VideoHistoryScreen())

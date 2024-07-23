@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 
 public class ChannelShowVideoTimelinePayload implements CustomPayload {
     public static final IdCodec<ChannelShowVideoTimelinePayload> CHANNEL_SHOW_VIDEO_TIMELINE = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "show_video_timeline")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "show_video_timeline")),
             PacketCodec.ofStatic(
                     (b, p) -> {},
                     b -> new ChannelShowVideoTimelinePayload()

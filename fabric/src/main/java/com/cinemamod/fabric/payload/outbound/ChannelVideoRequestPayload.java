@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 
 public record ChannelVideoRequestPayload(VideoInfo info) implements CustomPayload {
     public static final IdCodec<ChannelVideoRequestPayload> CHANNEL_VIDEO_REQUEST = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "video_request")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "video_request")),
             PacketCodec.ofStatic(
                     (b, p) -> p.info.toBytes(b),
                     b -> new ChannelVideoRequestPayload(new VideoInfo().fromBytes(b))

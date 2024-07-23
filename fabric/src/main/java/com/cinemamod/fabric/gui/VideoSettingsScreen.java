@@ -2,35 +2,23 @@ package com.cinemamod.fabric.gui;
 
 import com.cinemamod.fabric.CinemaMod;
 import com.cinemamod.fabric.CinemaModClient;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.CheckboxWidget;
 import net.minecraft.client.gui.widget.SliderWidget;
 import net.minecraft.client.gui.widget.ButtonWidget.Builder;
+import net.minecraft.client.option.SimpleOption;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class VideoSettingsScreen extends Screen {
 
-    protected static final Identifier TEXTURE = new Identifier(CinemaMod.MODID, "textures/gui/menuui.png");
+    protected static final Identifier TEXTURE = Identifier.of(CinemaMod.MODID, "textures/gui/menuui.png");
     private boolean shouldReloadScreen;
 
     public VideoSettingsScreen() {
         super(Text.of("비디오 설정"));
-    }
-
-
-    private static CheckboxWidget checkboxWidget(int x, int y, int width, int height, Text text, boolean checked, CheckboxWidget.Callback callback) {
-        CheckboxWidget widget = CheckboxWidget.builder(text, MinecraftClient.getInstance().textRenderer)
-                .pos(x, y)
-                .checked(checked)
-                .callback(callback)
-                .build();
-        widget.setWidth(width);
-        widget.setHeight(height);
-        return widget;
     }
 
     @Override
@@ -48,23 +36,30 @@ public class VideoSettingsScreen extends Screen {
                 CinemaModClient.getInstance().getVideoSettings().setVolume((float) value);
             }
         });
-
-        addDrawableChild(checkboxWidget(method_31362() + 23, 110, 196, 20, Text.of("창이 포커싱 중이 아닐 때 음소거"),
-                CinemaModClient.getInstance().getVideoSettings().isMuteWhenAltTabbed(),
-                (checkbox, checked) -> CinemaModClient.getInstance().getVideoSettings().setMuteWhenAltTabbed(checked)
-        ));
-        addDrawableChild(checkboxWidget(method_31362() + 23, 142, 196, 20, Text.of("영상이 재생중일 때 십자선 숨기기"),
-                CinemaModClient.getInstance().getVideoSettings().isHideCrosshair(),
-                (checkbox, checked) -> CinemaModClient.getInstance().getVideoSettings().setHideCrosshair(checked)
-        ));
+        addDrawableChild(CheckboxWidget
+                .builder(Text.of("창이 포커싱 중이 아닐 때 음소거"), textRenderer)
+                .pos(method_31362() + 23, 110)
+                .maxWidth(196)
+                .checked(CinemaModClient.getInstance().getVideoSettings().isMuteWhenAltTabbed())
+                .callback((checkbox, checked) -> CinemaModClient.getInstance().getVideoSettings().setMuteWhenAltTabbed(checked))
+                .build()
+        );
+        addDrawableChild(CheckboxWidget
+                .builder(Text.of("영상이 재생중일 때 십자선 숨기기"), textRenderer)
+                .pos(method_31362() + 23, 142)
+                .maxWidth(196)
+                .checked(CinemaModClient.getInstance().getVideoSettings().isHideCrosshair())
+                .callback((checkbox, checked) -> CinemaModClient.getInstance().getVideoSettings().setHideCrosshair(checked))
+                .build()
+        );
         ButtonWidget.Builder screenResolutionBuilder = new Builder(
-            Text.of("화면 해상도: " + CinemaModClient.getInstance().getVideoSettings().getBrowserResolution() + "p"),
-             button ->
-        {
-            CinemaModClient.getInstance().getVideoSettings().setNextBrowserResolution();
-            button.setMessage(Text.of("화면 해상도: " + CinemaModClient.getInstance().getVideoSettings().getBrowserResolution() + "p"));
-            shouldReloadScreen = true;
-        });
+                Text.of("화면 해상도: " + CinemaModClient.getInstance().getVideoSettings().getBrowserResolution() + "p"),
+                button ->
+                {
+                    CinemaModClient.getInstance().getVideoSettings().setNextBrowserResolution();
+                    button.setMessage(Text.of("화면 해상도: " + CinemaModClient.getInstance().getVideoSettings().getBrowserResolution() + "p"));
+                    shouldReloadScreen = true;
+                });
         screenResolutionBuilder.dimensions(method_31362() + 23, 142 + 32, 196, 20);
         addDrawableChild(screenResolutionBuilder.build());
         ButtonWidget.Builder browserRefreshRateBuilder = new Builder(
@@ -94,7 +89,7 @@ public class VideoSettingsScreen extends Screen {
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
         int i = this.method_31362() + 3;
 //        super.renderBackground(context, mouseX, mouseY, delta);
-        renderDarkening(context);
+//        renderDarkening(context);
         renderInGameBackground(context);
         context.drawTexture(TEXTURE, i, 64, 1, 1, 236, 8);
         int j = this.method_31360();

@@ -13,7 +13,7 @@ import java.util.List;
 
 public record ChannelServicesPayload(List<VideoService> service) implements CustomPayload {
     public static final IdCodec<ChannelServicesPayload> CHANNEL_SERVICES = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "services")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "services")),
             PacketCodec.ofStatic(
                     (b, p) -> {
                         throw new NotImplementedException();

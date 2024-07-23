@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 
 public record ChannelOpenSettingsScreenPayload(VideoSettingsScreen screen) implements CustomPayload {
     public static final IdCodec<ChannelOpenSettingsScreenPayload> CHANNEL_OPEN_SETTINGS_SCREEN = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "open_settings_screen")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "open_settings_screen")),
             PacketCodec.ofStatic(
                     (b, p) -> {},
                     b -> new ChannelOpenSettingsScreenPayload(new VideoSettingsScreen())

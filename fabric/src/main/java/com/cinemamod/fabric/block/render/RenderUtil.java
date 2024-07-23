@@ -1,16 +1,14 @@
 package com.cinemamod.fabric.block.render;
 
+import net.minecraft.client.render.*;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
+
+import java.lang.reflect.InvocationTargetException;
 
 public final class RenderUtil {
 
@@ -77,32 +75,58 @@ public final class RenderUtil {
         matrixStack.translate(0, amount, 0);
     }
 
-    public static void renderTexture(MatrixStack matrixStack, Tessellator tessellator, BufferBuilder buffer, int glId) {
-        RenderSystem.setShader(GameRenderer::getPositionColorTexProgram);
+    public static void renderTexture(MatrixStack matrixStack, Tessellator tessellator, int glId) {
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderTexture(0, glId);
         Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
-        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
-        buffer.vertex(matrix4f, 0.0F, -1.0F, 1.0F).color(255, 255, 255, 255).texture(0.0f, 1.0f).next();
-        buffer.vertex(matrix4f, 1.0F, -1.0F, 1.0F).color(255, 255, 255, 255).texture(1.0f, 1.0f).next();
-        buffer.vertex(matrix4f, 1.0F, 0.0F, 0.0F).color(255, 255, 255, 255).texture(1.0f, 0.0f).next();
-        buffer.vertex(matrix4f, 0, 0, 0).color(255, 255, 255, 255).texture(0.0f, 0.0f).next();
-        tessellator.draw();
+        BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+        buffer.vertex(matrix4f, 0.0F, -1.0F, 1.0F).color(255, 255, 255, 255).texture(0.0f, 1.0f);
+        next(buffer);
+        buffer.vertex(matrix4f, 1.0F, -1.0F, 1.0F).color(255, 255, 255, 255).texture(1.0f, 1.0f);
+        next(buffer);
+        buffer.vertex(matrix4f, 1.0F, 0.0F, 0.0F).color(255, 255, 255, 255).texture(1.0f, 0.0f);
+        next(buffer);
+        buffer.vertex(matrix4f, 0, 0, 0).color(255, 255, 255, 255).texture(0.0f, 0.0f);
+        next(buffer);
+        draw(buffer);
         RenderSystem.setShaderTexture(0, 0);
     }
 
-    public static void renderColor(MatrixStack matrixStack, Tessellator tessellator, BufferBuilder buffer, int r, int g, int b) {
+    public static void renderColor(MatrixStack matrixStack, Tessellator tessellator, int r, int g, int b) {
         RenderSystem.setShader(GameRenderer::getPositionColorProgram);
         Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
-        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-        buffer.vertex(matrix4f, 0.0F, -1.0F, 1.0F).color(r, g, b, 255).next();
-        buffer.vertex(matrix4f, 1.0F, -1.0F, 1.0F).color(r, g, b, 255).next();
-        buffer.vertex(matrix4f, 1.0F, 0.0F, 0.0F).color(r, g, b, 255).next();
-        buffer.vertex(matrix4f, 0, 0, 0).color(r, g, b, 255).next();
-        tessellator.draw();
+        BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+        buffer.vertex(matrix4f, 0.0F, -1.0F, 1.0F).color(r, g, b, 255);
+        next(buffer);
+        buffer.vertex(matrix4f, 1.0F, -1.0F, 1.0F).color(r, g, b, 255);
+        next(buffer);
+        buffer.vertex(matrix4f, 1.0F, 0.0F, 0.0F).color(r, g, b, 255);
+        next(buffer);
+        buffer.vertex(matrix4f, 0, 0, 0).color(r, g, b, 255);
+        next(buffer);
+        draw(buffer);
     }
 
-    public static void renderBlack(MatrixStack matrixStack, Tessellator tessellator, BufferBuilder buffer) {
-        renderColor(matrixStack, tessellator, buffer, 0, 0, 0);
+    public static void renderBlack(MatrixStack matrixStack, Tessellator tessellator) {
+        renderColor(matrixStack, tessellator, 0, 0, 0);
     }
 
+    public static void next(BufferBuilder buffer) {
+        try {
+            // https://maven.fabricmc.net/docs/yarn-1.21+build.1/net/minecraft/client/render/BufferBuilder.html#endVertex()
+            var method = buffer.getClass().getDeclaredMethod("method_60806");
+            method.setAccessible(true);
+            method.invoke(buffer);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void draw(BufferBuilder buffer) {
+        BufferRenderer.drawWithGlobalProgram(buffer.end());
+    }
 }

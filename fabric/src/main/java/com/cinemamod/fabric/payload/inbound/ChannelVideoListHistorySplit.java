@@ -13,7 +13,7 @@ import java.util.List;
 
 public record ChannelVideoListHistorySplit(List<VideoListEntry> entries) implements CustomPayload {
     public static final IdCodec<ChannelVideoListHistorySplit> CHANNEL_VIDEO_LIST_HISTORY_SPLIT = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "video_list_history_split")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "video_list_history_split")),
             PacketCodec.ofStatic(
                     (b, p) -> {
                         throw new NotImplementedException();

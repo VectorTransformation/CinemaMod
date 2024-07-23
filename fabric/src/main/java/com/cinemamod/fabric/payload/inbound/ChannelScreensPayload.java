@@ -13,7 +13,7 @@ import java.util.List;
 
 public record ChannelScreensPayload(List<Screen> screens) implements CustomPayload {
     public static final IdCodec<ChannelScreensPayload> CHANNEL_SCREENS = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "screens")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "screens")),
             PacketCodec.ofStatic(
                     (b, p) -> {
                         throw new NotImplementedException();

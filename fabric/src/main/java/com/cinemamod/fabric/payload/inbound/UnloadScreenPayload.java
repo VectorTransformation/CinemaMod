@@ -10,7 +10,7 @@ import org.apache.commons.lang3.NotImplementedException;
 
 public class UnloadScreenPayload implements CustomPayload {
     public static final IdCodec<UnloadScreenPayload> UNLOAD_SCREEN = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "unload_screen")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "unload_screen")),
             PacketCodec.ofStatic(
                     (b, p) -> {
                         throw new NotImplementedException();

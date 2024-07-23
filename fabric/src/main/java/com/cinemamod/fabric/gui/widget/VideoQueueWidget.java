@@ -26,7 +26,7 @@ public class VideoQueueWidget extends ElementListWidget<VideoQueueWidgetEntry> {
 
     @Override
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-        context.enableScissor(this.getRowLeft(), this.getY() + 4, this.getScrollbarX() + this.getRowLeft() + 6, this.height - this.getY() - 4);
+        context.enableScissor(this.getRowLeft(), this.getY() + 4, getScrollbarPositionX(), this.height - this.getY() - 4);
         super.renderWidget(context, mouseX, mouseY, delta);
         context.disableScissor();
     }
@@ -47,4 +47,7 @@ public class VideoQueueWidget extends ElementListWidget<VideoQueueWidgetEntry> {
         replaceEntries(entries);
     }
 
+    public int getScrollbarPositionX() {
+        return this.width / 2 + 112;
+    }
 }

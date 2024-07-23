@@ -77,7 +77,7 @@ public class CinemaModClient implements ClientModInitializer {
         instance = this;
 
         // Hack for initializing CEF on macos
-        initCefMac();
+        // initCefMac();
 
         // Register ScreenBlock
         ScreenBlock.register();

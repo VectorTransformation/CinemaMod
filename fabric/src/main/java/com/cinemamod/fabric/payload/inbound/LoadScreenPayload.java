@@ -11,7 +11,7 @@ import org.apache.commons.lang3.NotImplementedException;
 
 public class LoadScreenPayload implements CustomPayload {
     public static final IdCodec<LoadScreenPayload> LOAD_SCREEN = new IdCodec<>(
-            new Id<>(new Identifier(CinemaMod.MODID, "load_screen")),
+            new Id<>(Identifier.of(CinemaMod.MODID, "load_screen")),
             PacketCodec.ofStatic(
                     (b, p) -> {
                         throw new NotImplementedException();
